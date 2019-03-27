@@ -1,0 +1,934 @@
+$desktop: 1330px;
+$tablet: 900px;
+$mobile: 700px;
+
+$whatItem: 5;
+$shapeItem: 15;
+
+$blue: #124ef7;
+$black: #111514;
+$grey: #6d708d;
+$greyLight: #eff1fd;
+$white: #ffffff;
+$violet: #7e00ea;
+$darkblue: #121021;
+$greyBackground: #f0edfe;
+
+$breakpoints: (
+  small : 310px,
+  medium: 700px,
+  large : 1370px
+);
+
+$f0: (
+  null  : 15px,
+  small : 20px,
+  medium: 25px,
+  large : 30px
+);
+$f1: (
+  null  : 30px,
+  small : 40px,
+  medium: 60px,
+  large : 72px
+);
+$f2: (
+  null  : 50px,
+  small : 100px,
+  medium: 150px,
+  large : 200px
+);
+$f3: (
+  null  : 24px,
+  small : 32px,
+  medium: 40px,
+  large : 48px
+);
+$f4: (
+  null  : 12px,
+  small : 14px,
+  medium: 16px,
+  large : 18px
+);
+$f5: (
+  null  : 12px,
+  small : 13px,
+  medium: 14px,
+  large : 15px
+);
+$f6: (
+  null  : 10px,
+  small : 11px,
+  medium: 12px,
+  large : 13px
+);
+
+@mixin font-size($fs-map, $fs-breakpoints: $breakpoints) {
+  @each $fs-breakpoint, $fs-font-size in $fs-map {
+    @if $fs-breakpoint == null {
+      font-size: $fs-font-size;
+    }
+    @else {
+      @if map-has-key($fs-breakpoints, $fs-breakpoint) {
+        $fs-breakpoint: map-get($fs-breakpoints, $fs-breakpoint);
+      }
+      @media screen and (min-width: $fs-breakpoint) {
+        font-size: $fs-font-size;
+      }
+    }
+  }
+}
+
+
+@mixin textDescription() {
+  padding: 40px 0;
+  font-weight: 500;
+  color: $grey;
+  line-height: 1.5;
+  @include font-size($f4);
+}
+@mixin blueButton() {
+  margin-left: 20px;
+  color: $blue;
+  border: 2px solid $blue;
+  font-weight: 500;
+  transition: 0.2s;
+  @media (min-width: $mobile) {
+    &:hover{
+      background: linear-gradient(to right, #E0EAFC, #E0EAFC);
+    }
+  }
+  @media (max-width: $tablet) {
+    margin-left: 10px;
+  }
+}
+@mixin redButton() {
+  @include font-size($f5);
+  color: $white;
+  font-weight: 500;
+  padding: 0 35px;
+  line-height: 60px;
+  border-radius: 60px;
+  background-image: linear-gradient(to right, #f3537b 0%, #fb5b44 100%);
+  box-shadow: 0px 5px 30px -10px rgba(243, 83, 122, 0.8);
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  transition: 0.2s;
+  @media (min-width: $mobile) {
+    &:hover{
+      background: linear-gradient(to right, #93291e, #ed213a);
+    }
+  }
+}
+
+@mixin opacityTitle() {
+  opacity: 0;
+  transition: all 1000ms cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  transform: translateY(50px);
+}
+
+@mixin showText($property, $delay) {
+  transition-delay: $delay + s;
+  height: $property+px;
+  opacity: 1;
+}
+
+@mixin showItem($delay) {
+  transform: translateY(0px);
+  transition-delay: $delay + s;
+  opacity: 1;
+}
+
+@font-face {
+  font-family: 'MagistralC';
+  src: url('../fonts/MagistralC.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MagistralCBold';
+  src: url('../fonts/MagistralC-Bold.otf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+body, *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: 1;
+  font-family: 'Montserrat', sans-serif;
+  color: $black;
+}
+
+body{
+  position: relative;
+  overflow-x: hidden;
+}
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+input:focus, textarea:focus, button:focus{
+  outline: none;
+}
+
+fieldset, input{
+  border: none;
+}
+section{
+  position: relative;
+  & > *{
+    z-index: 1;
+    position: relative;
+  }
+  & > svg{
+    z-index: 0;
+  }
+}
+textarea{
+  resize: none;
+}
+
+.main{
+  position: relative;
+  background: $white;
+  overflow: hidden;
+  margin-bottom: 378px;
+}
+
+.header{
+  display: flex;
+  align-items: center;
+  height: 40px;
+  justify-content: space-between;
+  z-index: 11;
+  position: fixed;
+  width: 100%;
+  top: -55px;
+  opacity: 0;
+  transition: 1s;
+  padding: 40px 150px;
+  @media (max-width: $desktop) {
+    padding: 40px;
+  }
+  @media (max-width: $mobile) {
+    background: #eff1fd;
+    padding: 25px;
+  }
+  &-logo{
+    display: flex;
+    align-items: center;
+    @media (max-width: $mobile) {
+      margin: 0 auto;
+    }
+    img{
+      height: 40px;
+    }
+    span{
+      @include font-size($f0);
+      font-family: 'MagistralCBold';
+      &:nth-child(2){
+        color: $blue;
+      }
+      &:nth-child(3){
+        color: $black;
+      }
+    }
+  }
+  &-menu{
+    font-size: 0;
+    @media (max-width: $mobile) {
+      position: absolute;
+      top: 50px;
+      width: 100%;
+      flex-wrap: wrap;
+      height: 0;
+      overflow: hidden;
+    }
+    a{
+      @include font-size($f5);
+      color: $darkblue;
+      padding: 0 20px;
+      line-height: 40px;
+      display: inline-block;
+      border-radius: 40px;
+      transition: 0.2s;
+      position: relative;
+      @media (max-width: $tablet) {
+        padding: 0 15px;
+      }
+      @media (max-width: $mobile) {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+        width: 150px;
+      }
+      &:after{
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: $blue;
+        transition: 0.2s;
+        opacity: 0;
+      }
+      @media (min-width: $mobile) {
+        &:hover{
+          color: $blue;
+          &:after{
+            opacity: 1;
+          }
+        }
+      }
+      @media (min-width: $mobile) {
+          &.active{
+            color: $blue;
+            &:after{
+                opacity: 1;
+            }
+          }
+      }
+    }
+    .signup{
+      margin-left: 20px;
+      background: $blue;
+      color: $white;
+      border: 2px solid $blue;
+      font-weight: 500;
+      box-shadow: 0px 5px 30px -10px rgba(18,78,247,0.8);
+      @media (min-width: $mobile) {
+        &:hover{
+          background: $white;
+          box-shadow: 0px 5px 50px 0px rgba(18, 78, 247, 0.5);
+        }
+      }
+      &:after{
+        display: none;
+      }
+      @media (max-width: $mobile) {
+        margin: 0 auto 10px;
+      }
+    }
+    .login{
+      @include blueButton();
+      &:after{
+        display: none;
+      }
+      @media (max-width: $mobile) {
+        margin: 0 auto 10px;
+      }
+    }
+  }
+}
+.platform{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0 0 0 60px;
+  min-height: 65vh;
+  &.show{
+    .platform{
+        &-title{
+          span{
+            font-family: 'MagistralCBold';
+            color: $blue;
+          }
+          @include showItem(0.25);
+        }
+        &-description{
+          @include showItem(0.5);
+        }
+        &-btn{
+          &-start{
+            @include showItem(0.75);
+          }
+          &-more{
+            @include showItem(1);
+          }
+        }
+        &-img{
+          &-background{
+            @include showItem(0.25);
+          }
+          &-platform{
+            @include showItem(0.5);
+          }
+        }
+    }
+  }
+  @media (max-width: $desktop) {
+    padding: 0 0 0 20px;
+  }
+  @media (max-width: $mobile) {
+    padding: 0 20px;
+  }
+  &-text{
+    width: 525px;
+    padding: 100px 25px 55px 0;
+    @media (max-width: $desktop) {
+      width: 50%;
+    }
+    @media (max-width: $mobile) {
+      width: 100%;
+      padding: 80px 0 0;
+    }
+  }
+  &-title{
+    font-family: 'MagistralCBold';
+    @include font-size($f1);
+    @include opacityTitle();
+  }
+  &-description{
+    @include textDescription();
+    @include opacityTitle();
+  }
+  &-btn{
+    a{
+      @include font-size($f5);
+      display: inline-block;
+      padding: 0 35px;
+      @media (max-width: $tablet) {
+        padding: 0 20px;
+      }
+    }
+    &-start{
+      @include redButton();
+      @include opacityTitle();
+    }
+    &-more{
+      @include blueButton();
+      line-height: 56px;
+      border-radius: 60px;
+      @include opacityTitle();
+    }
+  }
+  &-img{
+    width: 53%;
+    position: relative;
+    @media (max-width: $desktop) {
+      width: 50%;
+    }
+    @media (max-width: $mobile) {
+      width: 100%;
+      padding: 0;
+    }
+    &-background{
+      width: 100%;
+      @include opacityTitle();
+    }
+    &-platform{
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 70%;
+      @include opacityTitle();
+    }
+  }
+}
+.scroll{
+  &-block {
+    transition: 0.5s;
+    width: 25px;
+    height: 39px;
+    margin: 65px auto 35px;
+    z-index: 10;
+    @media (max-width: $mobile) {
+      margin: 20px auto;
+    }
+  }
+  &-mouse {
+    width: 3px;
+    padding: 5px 9px;
+    height: 25px;
+    border: 2px solid $blue;
+    border-radius: 25px;
+    opacity: 0.75;
+    box-sizing: content-box;
+  }
+  &-scroller {
+    width: 3px;
+    height: 10px;
+    border-radius: 25%;
+    background-color: $blue;
+    animation-name: scroll;
+    animation-duration: 2.2s;
+    animation-timing-function: cubic-bezier(.15,.41,.69,.94);
+    animation-iteration-count: infinite;
+  }
+}
+@keyframes scroll {
+  0% { opacity: 0; }
+  10% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(15px); opacity: 0;}
+}
+.ready .header{
+  transform: translateY(55px);
+  opacity: 1;
+  &.white{
+    background: $white;
+    @media (max-width: $mobile) {
+      background: #eff1fd;
+    }
+  }
+}
+.push{
+  padding: 80px 70px 50px;
+  margin: 0 auto;
+  max-width: 1330px;
+  background: $blue;
+  position: relative;
+  &.mode{
+    background: $violet;
+  }
+  &.show{
+    .push{
+      &-text{
+        &-title{
+          @include showItem(0.25);
+        }
+        &-description{
+          @include showItem(0.5);
+        }
+      }
+      &-img{
+        @include showItem(0.25);
+        transform: translateX(-50%);
+      }
+    }
+    .platform-btn-start{
+      @include showItem(0.75);
+    }
+  }
+  @media (max-width: $desktop) {
+    padding: 80px 20px;
+  }
+  @media (max-width: $mobile) {
+    padding: 50px 20px 0;
+  }
+  &-text{
+    width: calc(50% - 70px);
+    @media (max-width: $mobile) {
+      width: 100%;
+    }
+    &-title{
+      @include font-size($f2);
+      text-transform: uppercase;
+      font-family: 'MagistralCBold';
+      color: $white;
+      @include opacityTitle();
+    }
+    &-description{
+      @include textDescription();
+      padding-top: 0;
+      color: $white;
+      @include opacityTitle();
+    }
+  }
+  &-img{
+    position: absolute;
+    bottom: 0;
+    left: 75%;
+    width: calc(45% - 70px);
+    transform: translateX(-50%);
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    box-shadow: 0px 0px 75px -10px rgba(0,0,0,0.75);
+    @include opacityTitle();
+    transform: translateX(100%);
+    @media (max-width: $mobile) {
+        position: relative;
+        bottom: -3px;
+        left: 50%;
+        width: 50%;
+        min-width: 280px;
+        margin-top: 50px;
+    }
+  }
+}
+.advantages{
+  margin: 0 auto;
+  max-width: 1330px;
+  padding: 140px 80px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  &.show{
+    @for $i from 0 to $whatItem {
+      .advantages-item:nth-child(#{$i + 1}) {
+        @include showItem($i / 4);
+      }
+    }
+  }
+  @media (max-width: $desktop) {
+    padding: 80px 20px;
+  }
+  @media (max-width: $mobile) {
+    padding: 50px 20px 0;
+  }
+  &-item{
+    width: calc(25% - 30px);
+    @include opacityTitle();
+    @media (max-width: $desktop) {
+      width: calc(25% - 10px);
+    }
+    @media (max-width: $mobile) {
+        width: 70%;
+        margin: 0 auto 30px;
+        text-align: center;
+        min-width: 280px;
+    }
+  }
+  .item-img{
+    height: 90px;
+  }
+  .item-title{
+    padding: 20px 0;
+    @include font-size($f0);
+    font-family: 'MagistralCBold';
+    color: $black;
+  }
+  .item-description{
+    @include font-size($f5);
+    color: $grey;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+}
+.important{
+  margin: 0 auto;
+  max-width: 1330px;
+  padding: 120px 60px 0;
+  display: flex;
+  flex-wrap: wrap;
+  &.show{
+    .important{
+      &-block{
+        &:nth-child(1){
+          .important-img{
+            @include showItem(0.25);
+            @media (max-width: $mobile) {
+              transform: translateX(-50%);
+            }
+          }
+          .important-text-title{
+            @include showItem(0.5);
+          }
+          .important-text-description{
+            @include showItem(0.75);
+          }
+        }
+        &:nth-child(2){
+          .important-img{
+            @include showItem(1);
+            @media (max-width: $mobile) {
+              transform: translateX(-50%);
+            }
+          }
+          .important-text-title{
+            @include showItem(1.25);
+          }
+          .important-text-description{
+            @include showItem(1.5);
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: $desktop) {
+    padding: 120px 20px 0px;
+  }
+  @media (max-width: $mobile) {
+    padding: 50px 20px 0px;
+  }
+  &-block{
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    @media (max-width: $mobile) {
+      width: 100%;
+      &:first-child{
+        margin-bottom: 50px;
+      }
+    }
+  }
+  &-img{
+    width: 40%;
+    @include opacityTitle();
+    @media (max-width: $mobile) {
+        width: 50%;
+        position: relative;
+        left: 45%;
+        transform: translateX(-50%);
+    }
+    img{
+      width: 100%;
+    }
+  }
+  &-text{
+    width: 60%;
+    padding: 0 10% 0 5%;
+    @media (max-width: $desktop) {
+      padding: 0 5%;
+    }
+    @media (max-width: $mobile) {
+        width: 100%;
+    }
+    &-title{
+      @include font-size($f0);
+      color: $black;
+      padding: 30px 0 20px;
+      font-family: 'MagistralCBold';
+      @include opacityTitle();
+    }
+    &-description{
+      @include font-size($f5);
+      color: $grey;
+      font-weight: 500;
+      line-height: 1.5;
+      @include opacityTitle();
+    }
+  }
+}
+.business{
+  width: calc(1330px + (100% - 1330px) / 2);
+  background: $greyBackground;
+  margin-bottom: 130px;
+  margin-left: auto;
+  padding: 30px 0 0px 70px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  &.show{
+    .business{
+      &-text{
+        &-title{
+          @include showItem(0.25);
+        }
+        &-description{
+          @include showItem(0.5);
+        }
+      }
+      &-img{
+        @for $i from 0 to $whatItem {
+          img:nth-child(#{$i + 1}) {
+            @include showItem($i / 4);
+          }
+        }
+      }
+    }
+    .platform-btn-start{
+      @include showItem(0.75);
+    }
+  }
+  @media (max-width: $desktop) {
+    width: 100%;
+    padding: 50px 20px;
+  }
+  @media (max-width: $mobile) {
+    padding: 50px 20px 0;
+    margin-bottom: 50px;
+  }
+  &-text{
+    width: 470px;
+    padding-right: 25px;
+    @media (max-width: $desktop) {
+      width: 50%;
+    }
+    @media (max-width: $mobile) {
+      width: 100%;
+      padding-right: 0;
+    }
+    &-title{
+      @include font-size($f3);
+      color: $black;
+      font-family: 'MagistralCBold';
+      @include opacityTitle();
+    }
+    &-description{
+      @include font-size($f4);
+      font-weight: 500;
+      color: $grey;
+      line-height: 1.5;
+      padding: 40px 0;
+      @include opacityTitle();
+    }
+  }
+  &-img{
+    position: relative;
+    width: calc(100% - 470px);
+    max-width: 700px;
+    @media (max-width: $desktop) {
+      width: 50%;
+    }
+    @media (max-width: $mobile) {
+        width: 75%;
+        min-width: 280px;
+        margin: 0px auto 0;
+    }
+    &-main{
+      width: 100%;
+      @include opacityTitle();
+    }
+    &-item{
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      @include opacityTitle();
+    }
+  }
+}
+.start{
+  padding: 115px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(to right, $violet 0%, $blue 100%);
+  &.show{
+    .start-title{
+      @include showItem(0.25);
+    }
+    .platform-btn-start{
+      @include showItem(0.5);
+    }
+  }
+  &:after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: url('../img/start.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.3;
+  }
+  &-title{
+    color: $white;
+    font-family: 'MagistralCBold';
+    @include font-size($f1);
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+    @include opacityTitle();
+  }
+}
+.footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 70px 150px;
+  display: flex;
+  flex-wrap: wrap;
+  z-index: -2;
+  @media (max-width: $desktop) {
+    padding: 80px 20px;
+  }
+  @media (max-width: $mobile) {
+    padding: 20px;
+    text-align: center;
+  }
+  & > div{
+    width: 30%;
+    @media (max-width: $mobile) {
+      width: 100%;
+      padding: 0;
+    }
+    &.footer-question{
+      width: 40%;
+      @media (max-width: $mobile) {
+        width: 100%;
+        padding: 0;
+      }
+    }
+  }
+  &-logo{
+    font-size: 0;
+    margin-bottom: 25px;
+    span{
+      @include font-size($f0);
+      font-family: 'MagistralCBold';
+      &:nth-child(1){
+        color: $blue;
+      }
+      &:nth-child(2){
+        color: $black;
+      }
+    }
+  }
+  &-description{
+    color: $grey;
+    @include font-size($f5);
+    line-height: 1.5;
+  }
+  &-menu{
+    padding: 0 20% 0 10%;
+    a{
+      display: block;
+      @include font-size($f5);
+      padding: 20px 0;
+      @media (max-width: $mobile) {
+        display: inline-block;
+        padding: 20px 10px;
+      }
+    }
+  }
+  &-question{
+    &-text{
+      padding: 20px 0;
+    }
+    &-contact{
+      display: inline-block;
+      font-weight: 500;
+      line-height: 60px;
+      border-radius: 60px;
+      margin: 0;
+      padding: 0 50px;
+      color: $white;
+      background: #124ef7;
+      box-shadow: 0px 5px 30px -10px rgba(18, 78, 247, 0.8);
+      transition: 0.2s;
+      border: 2px solid $blue;
+      @media (min-width: $mobile) {
+          &:hover{
+            color: $blue;
+            background: $white;
+            box-shadow: 0px 5px 50px 0px rgba(18, 78, 247, 0.5);
+          }
+      }
+    }
+  }
+  &-copyright{
+    padding-top: 60px;
+    width: 100%;
+    @include font-size($f6);
+    color: $grey;
+    @media (max-width: $mobile) {
+      padding-top: 40px;
+    }
+  }
+}
+
+.shape1{
+  position: absolute;
+  left: 0;
+  top: 60%;
+  width: 15%;
+  height: auto;
+}
+
+@media (max-width: $tablet) {
+  svg[class^=shape]{
+    display: none;
+  }
+}
